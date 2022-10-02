@@ -1,0 +1,733 @@
+{
+	"info": {
+		"_postman_id": "9dfe13a0-b48e-41d3-8c1c-a8484fc37567",
+		"name": "Practica 3 - Hotel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "880778"
+	},
+	"item": [
+		{
+			"name": "get/HealthCheck - 201",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Prueba para validar el código de respuesta",
+							"pm.test(\"Validar que el código de respuesta es 201\", function(){",
+							"    pm.expect(pm.response.code).to.eql(201)",
+							"});",
+							"",
+							"pm.test(\"Probar que el status response es 200\",function(){",
+							"    pm.response.to.have.status(201)",
+							"});",
+							"",
+							"pm.test(\"Status code es Created\", () => {",
+							"    pm.response.to.have.status(\"Created\");",
+							"})",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"Created\")",
+							"});",
+							"",
+							"pm.test(\"Probar que el request es exitoso\", function(){",
+							"    pm.response.to.be.success;",
+							"});",
+							"",
+							"pm.test(\"Probar que el request no es un error\", function(){",
+							"    pm.response.to.not.be.error;",
+							"});",
+							"",
+							"pm.test(\"Probar que el request manda un código exitoso\", function(){",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202,204,205,206])",
+							"});",
+							"",
+							"",
+							"//Que podemos probar",
+							"console.log(pm.response.status)",
+							"console.log(pm.response.code)",
+							"console.log(pm.response.text())",
+							"console.log(pm.response.headers)",
+							"console.log(pm.info.eventName)",
+							"console.log(pm.info.requestName)",
+							"",
+							"tests[\"Response Time\" + responseTime + \"ms\"] = responseTime < 2000;",
+							"",
+							"pm.test(\"probar que el tiempo de respuesta sea menor de un 1\", function(){",
+							"    pm.expect(pm.response.responseTime).to.be.below(3000)",
+							"});",
+							"",
+							"pm.test(\"Que el header Conten-type no sea un application/json\", () =>{",
+							"    pm.expect(pm.response.headers.get('Conten-Type')).not.eql(\"Application-json\")",
+							"});",
+							"",
+							"pm.test(\"Que el header Conten-Type regrese un Text/plain\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(\"text/plain; charset=utf-8\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(pm.info.eventName)",
+							"console.log(pm.info.requestName)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/ping",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"ping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetToken - 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Prueba para validar el código de respuesta",
+							"pm.test(\"Validar que el código de respuesta es 200\", function(){",
+							"    pm.expect(pm.response.code).to.eql(200)",
+							"    pm.expect(pm.response.to.be.ok)",
+							"});",
+							"",
+							"pm.test(\"Probar que el status response es 200\",function(){",
+							"    pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Status code es Created\", () => {",
+							"    pm.response.to.have.status(\"OK\");",
+							"})",
+							"",
+							"pm.test(\"Probar que el request es exitoso\", function(){",
+							"    pm.response.to.be.success;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Probar que el request no es un error\", function(){",
+							"    pm.response.to.not.be.error;",
+							"});",
+							"",
+							"pm.test(\"Probar que el request manda un código exitoso\", function(){",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202,204,205,206])",
+							"});",
+							"",
+							"",
+							"tests[\"Response Time\" + responseTime + \"ms\"] = responseTime < 3000;",
+							"",
+							"//Pone todo el body response en una constante",
+							"",
+							"const responseJson = pm.response.json()",
+							"console.log(\"Response:\",responseJson)",
+							"",
+							"//Guardar el token en una variable de ambiente",
+							"pm.environment.set(\"token\", responseJson.token)",
+							"",
+							"console.log(typeof responseJson.token);",
+							"",
+							"pm.test(\"probar que el tiempo de respuesta sea menor de un 1\", function(){",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000)",
+							"});",
+							"",
+							"pm.test(\"probar que el token regrese un tipo de dato String\", function(){",
+							"    pm.expect(pm.response.json().token).to.be.a(\"String\")",
+							"    pm.expect(responseJson.token).to.be.a(\"String\")",
+							"});",
+							"",
+							"pm.test(\"Que el header Conten-Type regrese un Text/plain\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(\"application/json; charset=utf-8\")",
+							"});",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"token\")",
+							"});",
+							"",
+							"pm.test(\"Validar el tamaño del string de token\", () => {",
+							"    pm.expect(responseJson.token.length).to.be.equal(15)",
+							"});",
+							"",
+							"tests[\"Body esta vacío\"] = (responseBody!=null);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\" : \"admin\",\n    \"password\" : \"password123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/auth",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/CreateBooking - 200",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//Generar nombre random",
+							"var name = pm.variables.replaceIn('{{$randomFirstName}}')",
+							"console.log(\"nombre falso\",name)",
+							"pm.environment.set('name',name)",
+							"",
+							"//Variable para el apellido",
+							"var lastname = pm.variables.replaceIn(\"{{$randomLastName}}\")",
+							"console.log(\"LastName:\",  lastname)",
+							"pm.environment.set(\"lastname\", lastname)",
+							"//Variable para el precio",
+							"var price = pm.variables.replaceIn(\"{{$randomInt}}\")",
+							"console.log(\"precio:\", price)",
+							"pm.environment.set(\"price\", price)",
+							"var deposit = pm.variables.replaceIn(\"{{$randomBoolean}}\")",
+							"console.log(\"facke deposit:\", deposit)",
+							"pm.environment.set(\"deposit\", deposit)",
+							"",
+							"var date =pm.variables.replaceIn(\"{{$isoTimestamp}}\")",
+							"console.log(\"fecha falsa:\", date)",
+							"//Split",
+							"var checkin = date.split(\"T\")[0];",
+							"console.log(\"nueva fecha falsa:\", checkin)",
+							"pm.environment.set(\"checkin\",checkin)",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json()",
+							"console.log(responseJson.bookingid)",
+							"pm.environment.set(\"id\",responseJson.bookingid)",
+							"",
+							"",
+							"//Validar el nombre, crreando un variable y una funcion para comparar lo esperado actual",
+							"",
+							"var nombres = pm.environment.get(\"name\")",
+							"console.log(nombres)",
+							"console.log(responseJson.booking.firstname)",
+							"",
+							"pm.test(\"Validar el nombre de reserva\", function(){",
+							"    pm.expect(responseJson.booking.firstname).to.eql(nombres)",
+							"});",
+							"",
+							"",
+							"pm.test(\"Que el header Conten-Type regrese un Text/plain\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(\"application/json; charset=utf-8\")",
+							"});",
+							"",
+							"tests[\"Body esta vacío\"] = (responseBody!=null);",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"firstname\")",
+							"});",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"lastname\")",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstname\" : \"{{name}}\",\n    \"lastname\" : \"{{lastname}}\",\n    \"totalprice\" : {{price}},\n    \"depositpaid\" : {{deposit}},\n    \"bookingdates\" : {\n        \"checkin\" : \"{{checkin}}\",\n        \"checkout\" : \"{{checkin}}\"\n    },\n    \"additionalneeds\" : \"All\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url_base}}/booking",
+					"protocol": "https",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/GetbookingParameters - 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"Que el header Conten-Type regrese un Text/plain\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(\"application/json; charset=utf-8\")",
+							"});",
+							"",
+							"tests[\"Body esta vacío\"] = (responseBody!=null);",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"bookingid\")",
+							"});",
+							"",
+							"",
+							"pm.test(\"Que el header Conten-Type regrese un Text/plain\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(\"application/json; charset=utf-8\")",
+							"});",
+							"",
+							"pm.test(\"Que el header Conten-Type regrese un Text/plain\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Length')).to.eql(\"20\")",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{url_base}}/booking?lastname={{lastname}}&fistname={{name}}",
+					"protocol": "https",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"booking"
+					],
+					"query": [
+						{
+							"key": "lastname",
+							"value": "{{lastname}}"
+						},
+						{
+							"key": "checkin",
+							"value": "2024-03-01",
+							"disabled": true
+						},
+						{
+							"key": "checkout",
+							"value": "2024-03-01",
+							"disabled": true
+						},
+						{
+							"key": "fistname",
+							"value": "{{name}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/Getbooking - 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar el booking ID 4681 viene en el body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"4681\")",
+							"});",
+							"",
+							"tests[\"Body esta vacío\"] = (responseBody!=null);",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"bookingid\")",
+							"});",
+							"",
+							"pm.test(\"Probar que el request no es un error\", function(){",
+							"    pm.response.to.not.be.error;",
+							"});",
+							"",
+							"pm.test(\"Probar que el request manda un código exitoso\", function(){",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202,204,205,206])",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{url_base}}/booking",
+					"protocol": "https",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetBookingID - 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"//Validar el nombre, crreando un variable y una funcion para comparar lo esperado actual",
+							"const responseJson = pm.response.json()",
+							"var nombres = pm.environment.get(\"name\")",
+							"console.log(nombres)",
+							"console.log(responseJson.firstname)",
+							"",
+							"pm.test(\"Validar el nombre de reserva\", function(){",
+							"    pm.expect(responseJson.firstname).to.eql(nombres)",
+							"});",
+							"",
+							"var apellido = pm.environment.get(\"lastname\")",
+							"console.log(apellido)",
+							"console.log(responseJson.lastname)",
+							"",
+							"pm.test(\"Validar el apellido de reserva\", function(){",
+							"    pm.expect(responseJson.lastname).to.eql(apellido)",
+							"});",
+							"",
+							"tests[\"Body esta vacío\"] = (responseBody!=null);",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"bookingdates\")",
+							"});",
+							"",
+							"pm.test(\"Probar que el request no es un error\", function(){",
+							"    pm.response.to.not.be.error;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				},
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/booking/{{id}}",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"booking",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateBooking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Body esta vacío\"] = (responseBody!=null);",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"bookingdates\")",
+							"});",
+							"",
+							"pm.test(\"Probar que el request no es un error\", function(){",
+							"    pm.response.to.not.be.error;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Que el header Conten-Type regrese un Text/plain\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(\"application/json; charset=utf-8\")",
+							"});",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"    pm.expect(pm.response.text()).to.include(\"firstname\")",
+							"    pm.expect(pm.response.text()).to.include(\"lastname\")",
+							"    pm.expect(pm.response.text()).to.include(\"totalprice\")",
+							"    pm.expect(pm.response.text()).to.include(\"depositpaid\")",
+							"    pm.expect(pm.response.text()).to.include(\"bookingdates\")",
+							"    pm.expect(pm.response.text()).to.include(\"additionalneeds\")",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Cookie",
+						"value": "token={{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstname\" : \"Ana\",\n    \"lastname\" : \"Martinez\",\n    \"totalprice\" : 53,\n    \"depositpaid\" : true,\n    \"bookingdates\" : {\n        \"checkin\" : \"2023-01-01\",\n        \"checkout\" : \"2023-01-01\"\n    },\n    \"additionalneeds\" : \"All\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url_base}}/booking/{{id}}",
+					"protocol": "https",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"booking",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CheckupBookingID - 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Body esta vacío\"] = (responseBody!=null);",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"bookingdates\")",
+							"});",
+							"",
+							"pm.test(\"Probar que el request no es un error\", function(){",
+							"    pm.response.to.not.be.error;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Que el header Conten-Type regrese un Text/plain\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(\"application/json; charset=utf-8\")",
+							"});",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"    pm.expect(pm.response.text()).to.include(\"firstname\")",
+							"    pm.expect(pm.response.text()).to.include(\"lastname\")",
+							"    pm.expect(pm.response.text()).to.include(\"totalprice\")",
+							"    pm.expect(pm.response.text()).to.include(\"depositpaid\")",
+							"    pm.expect(pm.response.text()).to.include(\"bookingdates\")",
+							"    pm.expect(pm.response.text()).to.include(\"additionalneeds\")",
+							"});",
+							"",
+							"",
+							"//imprimir dato",
+							"console.log(typeof 37); ",
+							"",
+							"//probar tipo de dato",
+							"pm.test(\"Probar tipo de dato\", function(){",
+							"    pm.expect(jsonData)",
+							"",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				},
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url_base}}/booking/{{id}}",
+					"protocol": "https",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"booking",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteBooking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Probar que el request no es un error\", function(){",
+							"    pm.response.to.be.not.error;",
+							"});",
+							"",
+							"pm.test(\"Probar que el request manda un código exitoso\", function(){",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202,204,205,206])",
+							"});",
+							"",
+							"tests[\"Body esta vacío\"] = (responseBody!=null);",
+							"",
+							"pm.test(\"probar que el tiempo de respuesta sea menor de un 1\", function(){",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000)",
+							"});",
+							"",
+							"pm.test(\"Que el header Conten-Type regrese un Text/plain\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Length')).to.eql(\"7\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "token={{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/booking/{{id}}",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"booking",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,889 @@
+{
+	"info": {
+		"_postman_id": "1719300e-c54b-4571-b199-611024972c96",
+		"name": "Practica 4 - Tienda de mascotas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "880778"
+	},
+	"item": [
+		{
+			"name": "post/addNewPet 201",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Json response:\", pm.response.json())",
+							"console.log(\"Nombre response:\", pm.response.json().name)",
+							"",
+							"pm.test(\"Validar el nombre de la mascota sea igual que la variable dinamica\", function(){",
+							"    var nombre = pm.environment.get(\"name\")",
+							"    pm.expect(pm.response.json().name).to.eql(nombre)",
+							"})",
+							"",
+							"pm.test(\"Validar que el status sea igual a available\", function(){",
+							"    var status = pm.environment.get(\"status\")",
+							"    pm.expect(pm.response.json().status).to.eql(status)",
+							"})",
+							"",
+							"pm.test(\"validar que el código de respuesta es 200\", function(){",
+							"    pm.expect(pm.response.code).to.eql(200)",
+							"});",
+							"",
+							"pm.test(\"Probar que el request no es un error\", function(){",
+							"    pm.response.to.not.be.error;",
+							"});",
+							"",
+							"pm.test(\"probar que el tiempo de respuesta sea menor de un 1\", function(){",
+							"    pm.expect(pm.response.responseTime).to.be.below(3000)",
+							"});",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"id\")",
+							"pm.expect(pm.response.text()).to.include(\"category\")",
+							"pm.expect(pm.response.text()).to.include(\"name\")",
+							"pm.expect(pm.response.text()).to.include(\"photoUrls\")",
+							"pm.expect(pm.response.text()).to.include(\"tags\")",
+							"pm.expect(pm.response.text()).to.include(\"status\")",
+							"});",
+							"",
+							"pm.test(\"que el header Conten-type sea un application/json\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eq(\"application/json\")",
+							"})",
+							"",
+							"",
+							"",
+							"",
+							"//Limpiar variable",
+							"pm.environment.unset(\"id\");",
+							"console.log(pm.response.text())",
+							"console.log(pm.response.text().split(':')[1])",
+							"",
+							"let messageString = pm.response.text().split(':')[1];",
+							"console.log(messageString.split(',')[0])",
+							"pm.environment.set(\"id\",messageString.split(',')[0]);",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var name = pm.variables.replaceIn(\"{{$randomFirstName}}\");",
+							"pm.environment.set(\"name\", name)",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true,
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": 0,\n  \"category\": {\n    \"id\": 0,\n    \"name\": \"string\"\n  },\n  \"name\": \"{{name}}\",\n  \"photoUrls\": [\n    \"string\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 0,\n      \"name\": \"string\"\n    }\n  ],\n  \"status\": \"{{status}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/v2/pet",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"v2",
+						"pet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get/GetPetWithId 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"validar que el código de respuesta es 200\", function(){",
+							"    pm.expect(pm.response.code).to.eql(200)",
+							"});",
+							"",
+							"pm.test(\"probar que el tiempo de respuesta sea menor de un 1\", function(){",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000)",
+							"});",
+							"",
+							"pm.test(\"que el header Conten-type sea un application/json\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eq(\"application/json\")",
+							"})",
+							"",
+							"pm.test(\"Validar el nombre de la mascota sea igual que la variable dinamica\", function(){",
+							"    var nombre = pm.environment.get(\"name\")",
+							"    pm.expect(pm.response.json().name).to.eql(nombre)",
+							"})",
+							"",
+							"pm.test(\"Validar que el status sea igual a available\", function(){",
+							"    var status = pm.environment.get(\"status\")",
+							"    pm.expect(pm.response.json().status).to.eql(status)",
+							"})",
+							"",
+							"pm.test(\"Probar que el request no es un error\", function(){",
+							"    pm.response.to.not.be.error;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url_base}}/v2/pet/{{id}}",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"v2",
+						"pet",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post/updateImage 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"validar que el código de respuesta es 200\", function(){",
+							"    pm.expect(pm.response.code).to.eql(200)",
+							"});",
+							"",
+							"pm.test(\"probar que el tiempo de respuesta sea menor de un 1\", function(){",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000)",
+							"});",
+							"",
+							"pm.test(\"que el header Conten-type sea un application/json\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eq(\"application/json\")",
+							"})",
+							"",
+							"pm.test(\"Status code es Created\", () => {",
+							"    pm.response.to.have.status(\"OK\");",
+							"})",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"code\")",
+							"pm.expect(pm.response.text()).to.include(\"type\")",
+							"pm.expect(pm.response.text()).to.include(\"message\")",
+							"",
+							"});",
+							"",
+							"pm.test(\"Probar que el request no es un error\", function(){",
+							"    pm.response.to.not.be.error;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "multipart/form-data",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/anamartinez/Desktop/los-10-sonidos-principales-del-perro.jpeg"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://petstore.swagger.io/v2/pet/{{id}}/uploadImage",
+					"protocol": "https",
+					"host": [
+						"petstore",
+						"swagger",
+						"io"
+					],
+					"path": [
+						"v2",
+						"pet",
+						"{{id}}",
+						"uploadImage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get/GetPet 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"probar que el tiempo de respuesta sea menor de un 1\", function(){",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000)",
+							"});",
+							"",
+							"pm.test(\"que el header Conten-type sea un application/json\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eq(\"application/json\")",
+							"})",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"id\")",
+							"pm.expect(pm.response.text()).to.include(\"category\")",
+							"pm.expect(pm.response.text()).to.include(\"name\")",
+							"pm.expect(pm.response.text()).to.include(\"photoUrls\")",
+							"pm.expect(pm.response.text()).to.include(\"tags\")",
+							"pm.expect(pm.response.text()).to.include(\"status\")",
+							"",
+							"",
+							"});",
+							"",
+							"pm.test(\"Probar que el request no es un error\", function(){",
+							"    pm.response.to.not.be.error;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url_base}}/v2/pet/{{id}}",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"v2",
+						"pet",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "put/UpdateName 200",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var name_update = pm.variables.replaceIn(\"{{$randomFirstName}}\");",
+							"pm.environment.set(\"name_update\", name_update)",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Json response:\", pm.response.json())",
+							"console.log(\"Nombre response:\", pm.response.json().name)",
+							"",
+							"pm.test(\"Validar el nombre de la mascota sea igual que la variable dinamica\", function(){",
+							"    var nombre = pm.environment.get(\"name_update\")",
+							"    pm.expect(pm.response.json().name).to.eql(nombre)",
+							"})",
+							"",
+							"pm.test(\"Validar que el status sea igual a sold\", function(){",
+							"    pm.environment.set(\"status\",\"sold\")",
+							"    pm.expect(pm.response.json().status).to.eql(\"sold\")",
+							"})",
+							"",
+							"pm.test(\"validar que el código de respuesta es 200\", function(){",
+							"    pm.expect(pm.response.code).to.eql(200)",
+							"});",
+							"",
+							"pm.test(\"probar que el tiempo de respuesta sea menor de un 1\", function(){",
+							"    pm.expect(pm.response.responseTime).to.be.below(3000)",
+							"});",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"id\")",
+							"pm.expect(pm.response.text()).to.include(\"category\")",
+							"pm.expect(pm.response.text()).to.include(\"name\")",
+							"pm.expect(pm.response.text()).to.include(\"photoUrls\")",
+							"pm.expect(pm.response.text()).to.include(\"tags\")",
+							"pm.expect(pm.response.text()).to.include(\"status\")",
+							"});",
+							"",
+							"pm.test(\"que el header Conten-type sea un application/json\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eq(\"application/json\")",
+							"})",
+							"",
+							"pm.test(\"Probar que el request no es un error\", function(){",
+							"    pm.response.to.not.be.error;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"{{id}}\",\n  \"category\": {\n    \"id\": 0,\n    \"name\": \"string\"\n  },\n  \"name\": \"{{name_update}}\",\n  \"photoUrls\": [\n    \"string\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 0,\n      \"name\": \"string\"\n    }\n  ],\n  \"status\": \"sold\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/v2/pet",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"v2",
+						"pet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get/GetPetUpdateName200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Json response:\", pm.response.json())",
+							"console.log(\"Nombre response:\", pm.response.json().name)",
+							"",
+							"pm.test(\"Validar el nombre de la mascota sea igual que la variable dinamica\", function(){",
+							"    var nombre = pm.environment.get(\"name_update\")",
+							"    pm.expect(pm.response.json().name).to.eql(nombre)",
+							"})",
+							"",
+							"pm.test(\"Validar que el status sea igual a sold\", function(){",
+							"    pm.environment.set(\"status\",\"sold\")",
+							"    pm.expect(pm.response.json().status).to.eql(\"sold\")",
+							"})",
+							"",
+							"pm.test(\"validar que el código de respuesta es 200\", function(){",
+							"    pm.expect(pm.response.code).to.eql(200)",
+							"});",
+							"",
+							"pm.test(\"probar que el tiempo de respuesta sea menor de un 1\", function(){",
+							"    pm.expect(pm.response.responseTime).to.be.below(3000)",
+							"});",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"id\")",
+							"pm.expect(pm.response.text()).to.include(\"category\")",
+							"pm.expect(pm.response.text()).to.include(\"name\")",
+							"pm.expect(pm.response.text()).to.include(\"photoUrls\")",
+							"pm.expect(pm.response.text()).to.include(\"tags\")",
+							"pm.expect(pm.response.text()).to.include(\"status\")",
+							"});",
+							"",
+							"pm.test(\"que el header Conten-type sea un application/json\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eq(\"application/json\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url_base}}/v2/pet/{{id}}",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"v2",
+						"pet",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post/updateWFormUrlencode 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Validar que en message este regresando el id",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"message\")",
+							"});",
+							"",
+							"pm.test(\"Validar que message corresponda con el de la mascota\", function(){",
+							"    var message = pm.environment.get(\"id\")",
+							"    pm.expect(pm.response.json().message).to.eql(message)",
+							"})",
+							"",
+							"",
+							"pm.test(\"validar que el código de respuesta es 200\", function(){",
+							"    pm.expect(pm.response.code).to.eql(200)",
+							"});",
+							"",
+							"pm.test(\"Probar que el request no es un error\", function(){",
+							"    pm.response.to.not.be.error;",
+							"});",
+							"",
+							"pm.test(\"probar que el tiempo de respuesta sea menor de un 1\", function(){",
+							"    pm.expect(pm.response.responseTime).to.be.below(3000)",
+							"});",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"code\")",
+							"pm.expect(pm.response.text()).to.include(\"type\")",
+							"pm.expect(pm.response.text()).to.include(\"message\")",
+							"});",
+							"",
+							"pm.test(\"que el header Conten-type sea un application/json\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eq(\"application/json\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "{{name_update}}",
+							"type": "text"
+						},
+						{
+							"key": "status",
+							"value": "sold",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url_base}}/v2/pet/{{id}}",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"v2",
+						"pet",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get/GetPetUpdateFomrUrlcode 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Validar que en message este regresando el id",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"id\")",
+							"});",
+							"",
+							"",
+							"",
+							"pm.test(\"validar que el código de respuesta es 200\", function(){",
+							"    pm.expect(pm.response.code).to.eql(200)",
+							"});",
+							"",
+							"pm.test(\"Probar que el request no es un error\", function(){",
+							"    pm.response.to.not.be.error;",
+							"});",
+							"",
+							"pm.test(\"probar que el tiempo de respuesta sea menor de un 1\", function(){",
+							"    pm.expect(pm.response.responseTime).to.be.below(3000)",
+							"});",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"id\")",
+							"pm.expect(pm.response.text()).to.include(\"category\")",
+							"pm.expect(pm.response.text()).to.include(\"name\")",
+							"pm.expect(pm.response.text()).to.include(\"photoUrls\")",
+							"pm.expect(pm.response.text()).to.include(\"tags\")",
+							"pm.expect(pm.response.text()).to.include(\"status\")",
+							"});",
+							"",
+							"pm.test(\"que el header Conten-type sea un application/json\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eq(\"application/json\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{url_base}}/v2/pet/{{id}}",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"v2",
+						"pet",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get/FindPetByStatus 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//probar que el id este en el resultado",
+							"",
+							"//Validar que en message este regresando el id",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"id\")",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validar el nombre de la mascota sea igual que la variable dinamica\", function(){",
+							"    var id = pm.environment.get(\"id\")",
+							"    pm.expect(pm.response.json().id).to.eql(id)",
+							"})",
+							"",
+							"",
+							"pm.test(\"validar que el código de respuesta es 200\", function(){",
+							"    pm.expect(pm.response.code).to.eql(200)",
+							"});",
+							"",
+							"pm.test(\"Probar que el request no es un error\", function(){",
+							"    pm.response.to.not.be.error;",
+							"});",
+							"",
+							"pm.test(\"probar que el tiempo de respuesta sea menor de un 1\", function(){",
+							"    pm.expect(pm.response.responseTime).to.be.below(3000)",
+							"});",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"id\")",
+							"pm.expect(pm.response.text()).to.include(\"category\")",
+							"pm.expect(pm.response.text()).to.include(\"name\")",
+							"pm.expect(pm.response.text()).to.include(\"photoUrls\")",
+							"pm.expect(pm.response.text()).to.include(\"tags\")",
+							"});",
+							"",
+							"pm.test(\"que el header Conten-type sea un application/json\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eq(\"application/json\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url_base}}/v2/pet/findByStatus?status=string",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"v2",
+						"pet",
+						"findByStatus"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "pending",
+							"disabled": true
+						},
+						{
+							"key": "status",
+							"value": "string"
+						},
+						{
+							"key": "id",
+							"value": "{{id}}",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete/deleteById 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"code\")",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validar que message corresponda con el de la mascota\", function(){",
+							"    var message = pm.environment.get(\"id\")",
+							"    pm.expect(pm.response.json().message).to.eql(message)",
+							"})",
+							"",
+							"",
+							"pm.test(\"validar que el código de respuesta es 200\", function(){",
+							"    pm.expect(pm.response.code).to.eql(200)",
+							"});",
+							"",
+							"pm.test(\"Probar que el request no es un error\", function(){",
+							"    pm.response.to.not.be.error;",
+							"});",
+							"",
+							"pm.test(\"probar que el tiempo de respuesta sea menor de un 1\", function(){",
+							"    pm.expect(pm.response.responseTime).to.be.below(3000)",
+							"});",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"code\")",
+							"pm.expect(pm.response.text()).to.include(\"type\")",
+							"pm.expect(pm.response.text()).to.include(\"message\")",
+							"});",
+							"",
+							"pm.test(\"que el header Conten-type sea un application/json\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eq(\"application/json\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url_base}}/v2/pet/{{id}}",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"v2",
+						"pet",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get/GetPetDelete 404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"",
+							"",
+							"pm.test(\"validar que el código de respuesta es 404\", function(){",
+							"    pm.expect(pm.response.code).to.eql(404)",
+							"});",
+							"",
+							"pm.test(\"Probar que el request no es un error\", function(){",
+							"    pm.response.to.be.error;",
+							"});",
+							"",
+							"pm.test(\"probar que el tiempo de respuesta sea menor de un 1\", function(){",
+							"    pm.expect(pm.response.responseTime).to.be.below(3000)",
+							"});",
+							"",
+							"pm.test(\"Validar el texto que viene en body\", () => {",
+							"pm.expect(pm.response.text()).to.include(\"code\")",
+							"pm.expect(pm.response.text()).to.include(\"type\")",
+							"pm.expect(pm.response.text()).to.include(\"message\")",
+							"});",
+							"",
+							"pm.test(\"que el header Conten-type sea un application/json\", () =>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eq(\"application/json\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url_base}}/v2/pet/{{id}}",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"v2",
+						"pet",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
