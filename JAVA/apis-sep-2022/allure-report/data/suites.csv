@@ -1,0 +1,6 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Sat Oct 08 11:26:17 CDT 2022","Sat Oct 08 11:26:18 CDT 2022","982","","eCommerce","","eCommerce","post_ObtenerUsuario_200","post_ObtenerUsuario_200()",""
+"passed","Sat Oct 08 11:26:07 CDT 2022","Sat Oct 08 11:26:10 CDT 2022","2818","","eCommerce","","eCommerce","get_obtenerCategorias_200","get_obtenerCategorias_200()",""
+"passed","Sat Oct 08 11:26:18 CDT 2022","Sat Oct 08 11:26:19 CDT 2022","1395","","eCommerce","","eCommerce","post_CrearUnaDireccion_201","post_CrearUnaDireccion_201()",""
+"passed","Sat Oct 08 11:26:10 CDT 2022","Sat Oct 08 11:26:16 CDT 2022","5545","","eCommerce","","eCommerce","post_Crear_ununcio_200","post_Crear_ununcio_200()",""
+"passed","Sat Oct 08 11:26:16 CDT 2022","Sat Oct 08 11:26:17 CDT 2022","1053","","eCommerce","","eCommerce","post_crearUsuario_401","post_crearUsuario_401()",""
